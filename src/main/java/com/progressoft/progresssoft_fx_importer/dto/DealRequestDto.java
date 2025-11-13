@@ -1,4 +1,4 @@
-package com.oumaima.assignment.progresssoft_fx_importer.dto;
+package com.progressoft.progresssoft_fx_importer.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

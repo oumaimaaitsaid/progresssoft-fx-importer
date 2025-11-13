@@ -1,4 +1,4 @@
-package com.oumaima.assignment.progresssoft_fx_importer.models.entities;
+package com.progressoft.progresssoft_fx_importer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
