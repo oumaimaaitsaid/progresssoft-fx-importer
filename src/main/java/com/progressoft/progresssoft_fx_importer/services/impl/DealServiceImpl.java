@@ -58,6 +58,9 @@ public class DealServiceImpl implements IDealService {
     }
 
     private void validateDeal(DealRequestDto dto) {
+        if (dto.dealUniqueId() == null || dto.dealUniqueId().isBlank()) {
+            throw new InvalidDealException("Deal Unique Id cannot be blank.");
+        }
         if (dto.fromCurrency().equals(dto.toCurrency())) {
             throw new InvalidDealException("From and To currencies cannot be the same.");
         }
