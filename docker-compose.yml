@@ -1,44 +1,31 @@
 version: '3.8'
 
 services:
-  # Service 1: The PostgreSQL Database
+  # Service 1
   db:
     image: postgres:14-alpine
     container_name: fx-db
     environment:
-      # These variables are used by Postgres to initialize the database
-      POSTGRES_USER: progresssoft
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: fx_warehouse
     ports:
-      # Maps port 5432 on the host to 5432 in the container
-      # This allows connecting to the DB from a local client (like DBeaver)
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      # Persists the database data even if the container is removed
       - postgres-data:/var/lib/postgresql/data
 
   # Service 2: The Spring Boot Application
   app:
-    # 'build: .' tells Docker Compose to build the image
-    # using the 'Dockerfile' in the current directory (the root)
     build: .
     container_name: fx-app
     ports:
-      # Maps port 8080 on the host to 8080 in the container (where Spring runs)
       - "8080:8080"
     environment:
-      # Pass database connection details to the Spring application
-      # Note: We use 'db' as the host, which is the service name of our database
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/fx_warehouse
-      SPRING_DATASOURCE_USERNAME: progresssoft
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
-      # This is critical: It waits for the 'db' service to be running
-      # before starting the 'app' service, preventing connection errors.
       - db
-
-# Define the named volume for data persistence
 volumes:
   postgres-data:

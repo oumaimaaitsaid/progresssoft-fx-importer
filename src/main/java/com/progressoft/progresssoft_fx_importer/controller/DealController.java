@@ -50,4 +50,5 @@ public class DealController {
 
         return ResponseEntity.ok(summary);
     }
+
 }

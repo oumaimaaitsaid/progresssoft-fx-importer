@@ -9,7 +9,6 @@ import com.progressoft.progresssoft_fx_importer.repository.DealRepository;
 import com.progressoft.progresssoft_fx_importer.services.IDealService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,17 +33,22 @@ public class DealServiceImpl implements IDealService {
 
                 validateDeal(dto);
 
+                if (dealRepository.existsById(dto.dealUniqueId())) {
+
+                    log.warn("Duplicate deal ID detected: {}. Skipping.", dto.dealUniqueId());
+                    failureCount++;
+                    continue; // Mchi l-l-ligne l-jaya
+                }
+
                 Deal dealToSave = dealMapper.toEntity(dto);
 
                 dealRepository.save(dealToSave);
 
                 successCount++;
 
-            } catch (DataIntegrityViolationException e) {
-                log.warn("Duplicate deal ID detected: {}. Skipping.", dto.dealUniqueId());
-                failureCount++;
             } catch (InvalidDealException e) {
-                log.warn("Invalid deal data for ID {}: {}. Skipping.", dto.dealUniqueId(), e.getMessage());
+
+                log.warn("Duplicate deal ID detected (or other integrity error): {}. Skipping.", dto.dealUniqueId());
                 failureCount++;
             } catch (Exception e) {
                 log.error("Unexpected error for deal ID {}: {}. Skipping.", dto.dealUniqueId(), e.getMessage(), e);
