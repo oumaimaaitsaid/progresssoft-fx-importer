@@ -7,7 +7,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.7</version> <relativePath/> </parent>
 
-    <groupId>com.oumaima.assignment</groupId>
+    <groupId>com.progressoft</groupId>
     <artifactId>progresssoft-fx-importer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>progresssoft-fx-importer</name>
